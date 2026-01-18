@@ -1,7 +1,7 @@
 from huggingface_hub import HfApi
 
 # 1. 直接在这里填入你的 Token
-your_token = "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" # 替换成你真实的 Token
+your_token = "token" # 替换成你真实的 Token
 import os
 import time
 
