@@ -1,4 +1,5 @@
 import os
+from pyexpat import model
 import sys
 import yaml
 import argparse
@@ -204,7 +205,15 @@ def compute_loss(encoder_s, classifier, encoder_t, decoder_t, x_s,y_s,x_t,y_t, c
     x_recon = decoder_t(feat_s, target_length=x_s.shape[-1])
     with torch.no_grad():
         feat_cycle = encoder_t(x_recon).detach()
-    l_cc = nn.MSELoss()(feat_cycle, feat_t)
+
+    # print(f"feat_s shape: {feat_s.shape}, feat_t shape: {feat_t.shape}, feat_cycle shape: {feat_cycle.shape}")
+    # l_cc = nn.MSELoss()(feat_cycle, feat_t)
+
+    if feat_cycle.shape[0] == feat_t.shape[0]:
+        l_cc = nn.MSELoss()(feat_cycle, feat_t)
+    else:
+        # 形状对不上（比如最后一次batch），直接 loss=0，跳过计算避免报错
+        l_cc = torch.tensor(0.0, device=feat_cycle.device)
 
     # L_LC: 标签一致性
     l_lc = nn.CrossEntropyLoss()(logits, y_s)
@@ -434,7 +443,7 @@ def main(config_path):
         save_dir="log",
         # experiment_name=f"{config['data']['dataset_name']}",
         config=config,
-        class_names=["0", "1", "2", "3"] # <--- 这里填你真实的故障类别名
+        class_names=[str(i) for i in range(config['model']['num_classes'])],
     )
     metric_recorder.save_config(config)
 

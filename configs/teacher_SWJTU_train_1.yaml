@@ -1,0 +1,65 @@
+# ============================================
+# Teacher 模型训练配置文件
+# ============================================
+
+# --- 数据配置 ---
+data:
+  dataset_name:  "SWJTU"               # 数据集名称
+  root_dir: "data/SWJTU"           # 数据根目录
+  train_wc: "WC1"                     # 训练工况
+  test_wcs:                           # 测试工况列表（测试所有工况）
+    - "WC1"
+    - "WC2"
+    - "WC3"
+    - "WC4"
+    # - "WC5"
+    # - "WC6"
+    # - "WC7"
+    # - "WC8"
+    # - "WC9"
+
+# --- 模型配置 ---
+model:
+  encoder:
+    input_channels: 3                 # 输入通道数（单轴振动为1）
+    base_filters: 64                  # 卷积基础通道数
+    output_feature_dim: 512           # 编码器输出特征维度
+  classifier:
+    feature_dim: 512                  # 必须与encoder输出维度一致
+    num_classes: 5                    # 故障类别数（根据数据集调整）
+    dropout_rate: 0.5                 # Dropout比例
+
+# --- 训练配置 ---
+training:
+  batch_size: 64                      # 批次大小
+  epochs: 100                         # 训练轮数
+  learning_rate: 0.001                # 初始学习率
+  weight_decay: 0.0001                # 权重衰减（L2正则化）
+
+  # 学习率调度器
+  scheduler:
+    type: "StepLR"                    # 调度器类型: StepLR, CosineAnnealingLR
+    step_size: 30                     # StepLR: 每多少epoch衰减一次
+    gamma: 0.1                        # StepLR: 衰减系数
+    T_max: 100                        # CosineAnnealingLR: 周期
+
+  # 早停配置
+  early_stopping:
+    enabled: true                     # 是否启用早停
+    patience: 15                      # 容忍多少epoch不提升
+    min_delta: 0.001                  # 最小提升阈值
+
+# --- 设备配置 ---
+device:
+  use_cuda: true                      # 是否使用GPU
+  gpu_id: 0                           # 使用的GPU编号
+
+# --- 输出配置 ---
+output:
+  save_dir: "ckpts/teacher"          # 模型保存目录
+  save_best: true                     # 是否保存最佳模型
+  save_last: true                     # 是否保存最后一个模型
+  log_interval: 10                    # 每多少个batch打印一次日志
+
+# --- 随机种子 ---
+seed: 42

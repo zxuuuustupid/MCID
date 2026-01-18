@@ -1,0 +1,44 @@
+# MCID 元学习训练配置
+data:
+  dataset_name: "SWJTU"
+  root_dir: "data/SWJTU"
+  source_wc: ["WC1"]                    # 源域（教师看的干净数据）
+  target_wcs: ["WC2", "WC3"]  # 目标域工况
+  test_wcs: ["WC4"]
+
+teacher:
+  checkpoint: "ckpts/teacher"
+  feature_dim: 512
+
+model:
+  input_channels: 3
+  base_filters: 64
+  feature_dim: 512
+  num_classes: 5
+  dropout: 0.3
+
+meta:
+  inner_lr: 0.001                      # 内循环学习率 alpha
+  beta: 1.0                           # meta-test 损失权重
+  first_order: true                   # FOMAML
+
+loss:
+  lambda_ac: 0.2                      # 对抗一致性
+  lambda_cc: 0.3                    # 循环一致性
+  lambda_lc: 1                    # 标签一致性
+
+training:
+  batch_size: 64
+  epochs: 100
+  lr: 0.001
+  weight_decay: 0.0001
+
+device:
+  use_cuda: true
+  gpu_id: 0
+
+output:
+  save_dir: "ckpts/mcid"
+  log_interval: 10
+
+seed: 42
