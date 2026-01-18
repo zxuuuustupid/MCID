@@ -11,7 +11,7 @@ class NpyDataset(Dataset):
         """
         self.data_list = []
         self.label_list = []
-        
+
         if not os.path.exists(folder_path):
             raise FileNotFoundError(f"找不到文件夹: {folder_path}")
 
@@ -19,29 +19,29 @@ class NpyDataset(Dataset):
         if not files:
             raise RuntimeError(f"文件夹 {folder_path} 里没有 .npy 文件")
 
-        print(f"正在加载 {folder_path} ...")
+        # print(f"正在加载 {folder_path} ...")
 
         for f in files:
             # === 核心逻辑：文件名转标签 ===
             try:
                 # 去掉 .npy 后缀，直接转 int
-                label_idx = int(os.path.splitext(f)[0]) 
+                label_idx = int(os.path.splitext(f)[0])
             except ValueError:
                 print(f"警告: 文件名 {f} 不是数字，无法作为标签，已跳过。")
                 continue
-            
+
             file_path = os.path.join(folder_path, f)
-            
+
             # === 读取数据 ===
             # data shape: (N, C, L)
             data = np.load(file_path)
-            
+
             # 强转 float32
             if data.dtype != np.float32:
                 data = data.astype(np.float32)
 
             self.data_list.append(torch.from_numpy(data))
-            
+
             # 生成对应的标签 Tensor
             # 如果 data 是 (100, 1, 1024), 那么就需要 100 个 label_idx
             num_samples = data.shape[0]
@@ -52,7 +52,7 @@ class NpyDataset(Dataset):
         if self.data_list:
             self.x = torch.cat(self.data_list, dim=0) # 拼接样本维度
             self.y = torch.cat(self.label_list, dim=0)
-            print(f"加载完成 -> 数据: {self.x.shape}, 标签: {self.y.shape}")
+            # print(f"加载完成 -> 数据: {self.x.shape}, 标签: {self.y.shape}")
         else:
             raise RuntimeError("没有加载到任何有效数据！")
 
@@ -66,8 +66,8 @@ class NpyDataset(Dataset):
 def get_dataloader(path, batch_size=32, shuffle=True):
     dataset = NpyDataset(path)
     return DataLoader(
-        dataset, 
-        batch_size=batch_size, 
+        dataset,
+        batch_size=batch_size,
         shuffle=shuffle,
         pin_memory=True
     )

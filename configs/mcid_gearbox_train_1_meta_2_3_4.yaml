@@ -18,7 +18,7 @@ model:
   dropout: 0.3
 
 meta:
-  inner_lr: 0.01                      # 内循环学习率 alpha
+  inner_lr: 0.001                      # 内循环学习率 alpha
   beta: 1.0                           # meta-test 损失权重
   first_order: true                   # FOMAML
 

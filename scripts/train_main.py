@@ -47,7 +47,7 @@ def load_data_split(config):
     source_wcs = data_cfg['source_wc']  # e.g., ["WC1"]
     if isinstance(source_wcs, str):
         source_wcs = [source_wcs]
-    print(f"[Data] Teacher 加载源工况: {source_wcs}")
+    # print(f"[Data] Teacher 加载源工况: {source_wcs}")
 
     # source_path = os.path.join(data_cfg['root_dir'], "_".join(source_wcs), 'train')
     # # 检查路径是否存在
@@ -72,7 +72,7 @@ def load_data_split(config):
     # === 2. 加载 Student 用的目标工况数据 (Target WCs / Attacker Pool) ===
     target_iters = {}
     target_wcs = data_cfg['target_wcs'] # e.g., ["WC2", "WC3"]
-    print(f"[Data] Student 加载目标工况 (作为攻击): {target_wcs}")
+    # print(f"[Data] Student 加载目标工况 (作为攻击): {target_wcs}")
 
     for wc in target_wcs:
         path = os.path.join(data_cfg['root_dir'], wc, 'train')
@@ -109,14 +109,14 @@ def load_teacher(config, device):
         filename
     )
 
-    print(f"正在加载教师模型: {ckpt_path}")
+    # print(f"正在加载教师模型: {ckpt_path}")
 
     if os.path.exists(ckpt_path) and os.path.isfile(ckpt_path):
         ckpt = torch.load(ckpt_path, map_location=device)
         encoder.load_state_dict(ckpt['encoder_state_dict'])
         classifier.load_state_dict(ckpt['classifier_state_dict'])
         decoder.load_state_dict(ckpt['decoder_state_dict'])
-        print(f"教师模型已加载: {ckpt_path}")
+        # print(f"教师模型已加载: {ckpt_path}")
     else:
         raise FileNotFoundError(f"教师模型文件未找到: {ckpt_path}")
 
@@ -431,8 +431,9 @@ def main(config_path):
 
 
     metric_recorder = MetricRecorder(
-        save_dir=config['output']['save_dir'],
-        experiment_name=f"{config['data']['dataset_name']}",
+        save_dir="log",
+        # experiment_name=f"{config['data']['dataset_name']}",
+        config=config,
         class_names=["0", "1", "2", "3"] # <--- 这里填你真实的故障类别名
     )
     metric_recorder.save_config(config)
