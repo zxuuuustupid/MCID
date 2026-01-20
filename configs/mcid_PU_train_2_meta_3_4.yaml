@@ -2,9 +2,9 @@
 data:
   dataset_name: "PU"
   root_dir: "data/PU"
-  source_wc: ["WC1"]                    # 源域（教师看的干净数据）
-  target_wcs: ["WC2", "WC3"]  # 目标域工况
-  test_wcs: ["WC4"]
+  source_wc: ["WC2"]                    # 源域（教师看的干净数据）
+  target_wcs: ["WC3", "WC4"]  # 目标域工况
+  test_wcs: ["WC1"]
 
 teacher:
   checkpoint: "ckpts/teacher"

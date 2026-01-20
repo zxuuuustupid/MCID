@@ -524,8 +524,8 @@ def main(config_path):
 
         #         metric_recorder.calculate_and_save(epoch)
 
-
-        if epoch % 5 == 0:
+        # if epoch% 1==5:
+        if epoch % 1 == 0:
             print(f"Epoch {epoch} 评估:")
             avg_acc = evaluate(encoder_s, classifier, config, device, metric_recorder)
 
