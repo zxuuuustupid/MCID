@@ -41,3 +41,9 @@ data.zip
 log/
 data/data_upload.py
 *.yaml
+*.csv
+*.pdf
+*.png
+*.jpg
+*.svg
+
