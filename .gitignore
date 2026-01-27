@@ -43,7 +43,8 @@ data/data_upload.py
 *.yaml
 *.csv
 *.pdf
-*.png
+!assets/
 *.jpg
 *.svg
 *.json
+experiments/*/**/*.png

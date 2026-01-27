@@ -6,6 +6,9 @@ This repository contains the official implementation of **Collaborative Teacher-
 
 **Paper Title:** Collaborative Teacher-Student Learning (CTSL): Simulated Domain Attacks for Class-Intrinsic Feature Learning in Multi-Domain Generalized Fault Diagnosis
 
+CTSL framework:
+![CTSL Framework](assets/ctsl.png)
+
 Existing data-driven fault diagnosis methods often suffer from performance degradation under varying operating conditions due to domain shift. While Domain Generalization (DG) attempts to mitigate this via distribution alignment, such approaches can damage the intrinsic data manifold structure.
 
 **CTSL** addresses these challenges by reframing condition variations as adversarial **"Simulated Domain Attacks"**. Instead of passive alignment, CTSL employs an active defense mechanism within a Teacher-Student paradigm to extract **Class-Intrinsic Features** that remain invariant across domains.
@@ -57,7 +60,6 @@ _Note: The codebase uses `mcid` prefixes for configuration files corresponding t
 # Example: Train CTSL on PU dataset, Source: Included in config, Targets: Meta-learning targets
 python scripts/train_main.py --config configs/mcid_<dataset>_train_<source>_meta_<targets>.yaml
 ```
-
 
 ## Citation
 
